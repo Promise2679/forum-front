@@ -32,7 +32,7 @@ const getReports = () => {
         } else {
             ElMessage({ message: `无法获取举报内容`, type: "error", duration: 1500 })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(() => reportList.data = [])
 }
 
 // 审批举报内容
