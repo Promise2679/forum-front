@@ -29,7 +29,7 @@ const userStore = defineStore('user', () => {
     localStorage.setItem('token', token.value)
   }
   const initialize = () => {
-    userName.value = localStorage.getItem('username')
+    userName.value = Number(localStorage.getItem('username'))
     token.value = localStorage.getItem('token')
     isAdmin.value = localStorage.getItem('admin')
     isLogin.value = token.value.length > 0
