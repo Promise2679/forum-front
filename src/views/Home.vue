@@ -15,13 +15,14 @@ const postList = ref([])
 
 // 获取帖子内容
 const getComments = () => {
-    axios.get("/api/student/post").then((res) => {
+    axios.get("/api/student/post").then(res => {
         if (res.data.code === 200) {
-            postList.value = res.data.data.post_list.reverse()
+            postList.value = res.data.data.post_list
         } else {
+            console.log(res.data)
             ElMessage({ message: `无法获取帖子内容:${res.data.msg}`, type: "error", duration: 1500 })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }
 
 // 发送帖子
@@ -32,7 +33,7 @@ const sendComment = () => {
         user_id: store.userName,
     }
 
-    axios.post("/api/student/post", data).then((res) => {
+    axios.post("/api/student/post", data).then(res => {
         isSend.value = false
         inputContent.value = ''
         if (res.data.code === 200) {
@@ -41,14 +42,14 @@ const sendComment = () => {
         } else {
             ElNotification({ message: `发布失败：${res.data.msg}`, type: 'error' })
         }
-    }).catch((err) => {
+    }).catch(err => {
         isSend.value = false
         ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 })
     })
 }
 
 // 获取点赞数
-const getLike = (id) => {
+const getLike = id => {
     const data = {
         params: {
             post_id: id,
@@ -56,34 +57,34 @@ const getLike = (id) => {
         }
     }
 
-    axios.get("/api/student/likes", data).then((res) => {
+    axios.get("/api/student/likes", data).then(res => {
         if (res.data.code === 200) {
             const index = postList.value.findIndex(item => item.id === id)
-            postList.value[index].likes = res.data.data.likes
+            postList.value[index].likes = res.data.data
         } else {
             ElMessage({ message: `无法获取点赞数:${res.data.msg}`, type: "error", duration: 1500 })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }
 
 // 点赞 / 取消点赞
-const toggleLike = debounce((index) => {
+const toggleLike = debounce(index => {
     const data = {
         post_id: index,
         user_id: store.userName,
     }
 
-    axios.post("/api/student/likes", data).then((res) => {
+    axios.post("/api/student/likes", data).then(res => {
         if (res.data.code === 200) {
             getLike(index)
         } else {
             ElMessage({ message: `${res.data.msg}`, type: "error", duration: 1500 })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }, 150)
 
 // 举报帖子
-const sendReport = (index) => {
+const sendReport = index => {
     ElMessageBox.prompt('请输入举报原因：', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -96,18 +97,18 @@ const sendReport = (index) => {
             post_id: index,
             reason: value,
         }
-        axios.post("/api/student/report-post", data).then((res) => {
+        axios.post("/api/student/report-post", data).then(res => {
             if (res.data.code === 200) {
                 ElNotification({ message: '举报成功！', type: 'success' })
             } else {
                 ElNotification({ message: `举报失败：${res.data.msg}`, type: 'error' })
             }
-        }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+        }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
     })
 }
 
 // 删除帖子
-const deletePost = (index) => {
+const deletePost = index => {
     ElMessageBox.confirm('确定要删除吗？该内容将不会再恢复！', 'Warning', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
@@ -120,19 +121,19 @@ const deletePost = (index) => {
             }
         }
 
-        axios.delete("/api/student/post", data).then((res) => {
+        axios.delete("/api/student/post", data).then(res => {
             if (res.data.code === 200) {
                 ElNotification({ message: '删除成功！', type: 'success' })
                 getComments()
             } else {
                 ElNotification({ message: `删除失败：${res.data.msg}`, type: 'error' })
             }
-        }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+        }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
     })
 }
 
 // 修改帖子
-const editPost = (id) => {
+const editPost = id => {
     const index = postList.value.findIndex(item => item.id === id)
     ElMessageBox.prompt('请编辑要修改的部分：', {
         confirmButtonText: '确认',
@@ -151,14 +152,14 @@ const editPost = (id) => {
             content: value,
         }
 
-        axios.put("/api/student/post", data).then((res) => {
+        axios.put("/api/student/post", data).then(res => {
             if (res.data.code === 200) {
                 ElNotification({ message: '修改成功！', type: 'success' })
                 getComments()
             } else {
                 ElNotification({ message: `修改失败：${res.data.msg}`, type: 'error' })
             }
-        }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+        }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
     })
 }
 

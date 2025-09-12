@@ -18,7 +18,7 @@ const login = debounce(() => {
         "password": password.value,
     }
 
-    axios.post("/api/user/login", data).then((res) => {
+    axios.post("/api/user/login", data).then(res => {
         if (res.data.code === 200) {
             store.registUserInfo(res.data.data.user_id, res.data.data.user_type, res.data.data.token)
             ElMessage({ message: "登录成功", type: "success", duration: 1500 })
@@ -30,7 +30,7 @@ const login = debounce(() => {
                 password.value = ""
             }, 1500)
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }, 150)
 
 const toReg = debounce(() => router.push({ name: 'reg' }), 150)

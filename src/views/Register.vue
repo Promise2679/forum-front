@@ -18,14 +18,14 @@ const reg = debounce(() => {
         "password": password.value,
         "user_type": Number(userType.value),
     }
-    axios.post("/api/user/reg", data).then((res) => {
+    axios.post("/api/user/reg", data).then(res => {
         if (res.data.code === 200) {
             ElMessage({ message: "注册成功", type: "success", duration: 1500 })
             router.push({ name: 'login' })
         } else {
             ElMessage({ message: `注册失败：${res.data.msg}`, type: "error", duration: 1500 })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }, 150)
 </script>
 

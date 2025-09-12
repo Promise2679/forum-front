@@ -26,9 +26,10 @@ const getReports = () => {
         }
     }
 
-    axios.get(url, data).then((res) => {
+    axios.get(url, data).then(res => {
+        console.log(res)
         if (res.data.code === 200) {
-            reportList.data = res.data.data.report_list.reverse()
+            reportList.data = res.data.data.report_list
         } else {
             ElMessage({ message: `无法获取举报内容`, type: "error", duration: 1500 })
         }
@@ -43,18 +44,18 @@ const processReport = debounce((id, value) => {
         approval: value
     }
 
-    axios.post("/api/admin/report", data).then((res) => {
+    axios.post("/api/admin/report", data).then(res => {
         if (res.data.code === 200) {
             ElNotification({ message: "提交成功！", type: "success" })
             setTimeout(() => getReports(), 1000)
         } else {
             ElNotification({ message: `审批失败：${res.data.msg}`, type: "error" })
         }
-    }).catch((err) => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }, 150)
 
 // 标签样式
-const toType = (value) => {
+const toType = value => {
     if (value === 0) {
         return "warning"
     } else if (value === 1) {
@@ -65,7 +66,7 @@ const toType = (value) => {
 }
 
 // 标签文本
-const toText = (value) => {
+const toText = value => {
     if (value === 0) {
         return "待审核"
     } else if (value === 1) {
