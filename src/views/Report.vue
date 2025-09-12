@@ -27,13 +27,12 @@ const getReports = () => {
     }
 
     axios.get(url, data).then(res => {
-        console.log(res)
         if (res.data.code === 200) {
             reportList.data = res.data.data.report_list
         } else {
             ElMessage({ message: `无法获取举报内容`, type: "error", duration: 1500 })
         }
-    }).catch(() => reportList.data = [])
+    }).catch(err => ElMessage({ message: `Error: ${err}`, type: "error", duration: 1500 }))
 }
 
 // 审批举报内容
