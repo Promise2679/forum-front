@@ -1,31 +1,17 @@
 # forum
 
-技术部大作业前端部分
+技术部前端大作业
 
-This template should help get you started developing with Vue 3 in Vite.
+框架：Vue
 
-## Recommended IDE Setup
+构建工具：Vite
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+路由：Vue Router
 
-## Customize configuration
+状态管理：Pinia
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+网络请求：Axios
 
-## Project Setup
+UI 库：Element Plus
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+图标库：Font Awesome
